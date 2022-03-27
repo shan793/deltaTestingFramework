@@ -1,3 +1,5 @@
+import calendar
+
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -52,8 +54,9 @@ class Mainpage(BaseClass):
     done_button_date_picker_XPath = "//button[@value='done']"
 
     type_of_trip_option_dynamic_xpath = "//ul[@id = 'selectTripType-desc']/li[contains(text(), '{}')]"
-    date_picker_month_dynamic_xpath = "//span[contains(@class,'dl-datepicker-month') and contains(text(), '%s')]"
-    date_picker_year_dynamic_xpath = "//span[contains(@class,'dl-datepicker-year') and contains(text(), '%d')]"
+    date_picker_month_dynamic_xpath = "//span[contains(@class,'dl-datepicker-month') and contains(text(), '{}')]"
+    date_picker_year_dynamic_xpath = "//span[contains(@class,'dl-datepicker-year') and contains(text(), '{}')]"
+    number_of_pax_option_to_select_dynamic_xpath = "//ul[@id = 'passengers-desc']/li[contains(text(), '{}')]"
 
     def get_alert_advisory_close_button(self):
         return self.driver.find_element(*Mainpage.alert_advisory_close_button)
@@ -130,3 +133,22 @@ class Mainpage(BaseClass):
         type_of_trip = self.driver.find_element(By.XPATH, self.type_of_trip_option_dynamic_xpath.format(triptype))
         type_of_trip.click()
         assert self.get_type_of_trip_dropdown_selector().text == triptype
+
+    def date_picker(self, month_as_int, date_as_int, year_as_int):
+        month_as_string = calendar.month_name[month_as_int]
+
+        date_picker_month_header_xpath = self.date_picker_month_dynamic_xpath.format(month_as_string)
+        date_picker_year_header_xpath = self.date_picker_year_dynamic_xpath.format(year_as_int)
+
+        self.get_datepicker_opener().click()
+
+        exception_handling = self.get_exception_handling()
+
+        while not exception_handling.is_displayed_enhanced(date_picker_month_header_xpath, 1, self.driver) and not exception_handling.is_displayed_enhanced(date_picker_year_header_xpath, 1, self.driver):
+            actions = ActionChains(self.driver)
+            actions.move_to_element(self.get_select_next_month())
+            actions.click()
+            actions.perform()
+
+
+

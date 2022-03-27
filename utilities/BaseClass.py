@@ -7,6 +7,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 
+from utilities.exceptionhandling import ExceptionHandling
+
 
 @pytest.mark.usefixtures("setup")
 class BaseClass:
@@ -22,6 +24,10 @@ class BaseClass:
 
         logger.setLevel(logging.DEBUG)
         return logger
+
+    def get_exception_handling(self):
+        exception_handling = ExceptionHandling(self.driver)
+        return exception_handling
 
     def get_actions(self):
         actions = ActionChains(self.driver)
