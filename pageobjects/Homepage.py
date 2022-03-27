@@ -3,6 +3,8 @@ import calendar
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+
 
 from pageobjects.Loginpage import LoginPage
 from utilities.BaseClass import BaseClass
@@ -53,6 +55,15 @@ class Mainpage(BaseClass):
     done_button_date_picker = (By.XPATH, "//button[@value='done']")
     done_button_date_picker_XPath = "//button[@value='done']"
 
+    pax_picker_dropdown_selector = (By.XPATH, "//span[@id='passengers-val']")
+    pax_picker_dropdown_selector_XPath = "//span[@id='passengers-val']"
+
+    pax_picker_dropdown_all_options_box = (By.XPATH, "//ul[@id = 'selectTripType-desc']")
+    pax_picker_dropdown_all_options_box_XPath = "//ul[@id = 'selectTripType-desc']"
+
+    search_for_all_flights_submit_button = (By.XPATH, "//button[@id='btn-book-submit']")
+    search_for_all_flights_submit_button_XPath = "//button[@id='btn-book-submit']"
+
     type_of_trip_option_dynamic_xpath = "//ul[@id = 'selectTripType-desc']/li[contains(text(), '{}')]"
     date_picker_month_dynamic_xpath = "//span[contains(@class,'dl-datepicker-month') and contains(text(), '{}')]"
     date_picker_year_dynamic_xpath = "//span[contains(@class,'dl-datepicker-year') and contains(text(), '{}')]"
@@ -96,6 +107,15 @@ class Mainpage(BaseClass):
 
     def get_done_button_date_picker(self):
         return self.driver.find_element(*Mainpage.done_button_date_picker)
+
+    def get_pax_picker_dropdown_selector(self):
+        return self.driver.find_element(*Mainpage.pax_picker_dropdown_selector)
+
+    def get_pax_picker_dropdown_all_options_box(self):
+        return self.driver.find_element(*Mainpage.pax_picker_dropdown_all_options_box)
+
+    def get_search_for_flights_submit_button(self):
+        return self.driver.find_element(*Mainpage.search_for_all_flights_submit_button)
 
     def click_login_button(self):
         self.driver.find_element(*Mainpage.login_button_home_page).click()
@@ -161,9 +181,33 @@ class Mainpage(BaseClass):
         a.click()
         a.perform()
 
-        assert f"{month_as_string[0:3]} {date_as_int} == {self.get_datepicker_dep_after_select().text}"
+        assert f"{month_as_string[0:3]} {date_as_int}" == self.get_datepicker_dep_after_select().text
 
+    def pax_count_picker(self, number_of_pax_one_to_nine):
 
+        self.validate_page_has_appeared(self.get_pax_picker_dropdown_selector())
+
+        actions = ActionChains(self.driver)
+        actions.move_to_element(self.get_pax_picker_dropdown_selector())
+        actions.click()
+        actions.perform()
+
+        number_of_pax_option_to_select = self.driver.find_element(By.XPATH, self.number_of_pax_option_to_select_dynamic_xpath.format(number_of_pax_one_to_nine))
+        print(number_of_pax_option_to_select)
+        while "select-ui-optionList-hover" not in number_of_pax_option_to_select.get_attribute("class"):
+            a = ActionChains(self.driver)
+            a.send_keys(Keys.DOWN)
+            a.perform()
+
+        number_of_pax_option_to_select.click()
+
+        assert f'{number_of_pax_one_to_nine} Passenger' in self.get_pax_picker_dropdown_selector().text
+
+    def hover_over_and_click_all_flight_button(self):
+        actions = ActionChains(self.driver)
+        actions.move_to_element(self.get_search_for_flights_submit_button())
+        actions.click()
+        actions.perform()
 
 
 
