@@ -203,7 +203,7 @@ class Mainpage(BaseClass):
 
         assert f'{number_of_pax_one_to_nine} Passenger' in self.get_pax_picker_dropdown_selector().text
 
-    def hover_over_and_click_all_flight_button(self):
+    def hover_over_and_click_search_for_flights_button(self):
         actions = ActionChains(self.driver)
         actions.move_to_element(self.get_search_for_flights_submit_button())
         actions.click()

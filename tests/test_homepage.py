@@ -29,7 +29,7 @@ class TestHomePage(BaseClass):
         homepage.select_type_of_trip("One Way")
         homepage.date_picker(4, 5, 2023)
         homepage.pax_count_picker(5)
-        homepage.hover_over_and_click_all_flight_button()
+        homepage.hover_over_and_click_search_for_flights_button()
 
 
 
