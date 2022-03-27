@@ -150,5 +150,22 @@ class Mainpage(BaseClass):
             actions.click()
             actions.perform()
 
+        dates = "/ancestor::div[@class= 'dl-datepicker-header']/following-sibling::div[@class='dl-datepicker-calendar-cont']//a[text()= '{}']".format(date_as_int)
+        date_picker_indiv_date_xpath = date_picker_month_header_xpath + dates
+        date_picker_indiv_date = self.driver.find_element(By.XPATH, date_picker_indiv_date_xpath)
+
+        a = ActionChains(self.driver)
+        a.move_to_element(date_picker_indiv_date)
+        a.click()
+        a.move_to_element(self.get_done_button_date_picker())
+        a.click()
+        a.perform()
+
+        assert f"{month_as_string[0:3]} {date_as_int} == {self.get_datepicker_dep_after_select().text}"
+
+
+
+
+
 
 
