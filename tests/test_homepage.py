@@ -9,11 +9,11 @@ class TestHomePage(BaseClass):
         logger = self.getLogger()
         actions = self.get_actions()
 
-        self.validate_page_has_appeared(homepage.get_login_button_home_page())
-        self.click_to_close(homepage.get_alert_advisory_close_button())
+        self.validate_page_has_appeared(homepage.get_login_button_home_page)
+        self.click_to_close(homepage.get_alert_advisory_close_button)
 
         loginpage = homepage.click_login_button()
-        self.validate_page_has_appeared(loginpage.get_login_page_header())
+        self.validate_page_has_appeared(loginpage.get_login_page_header)
 
         loginpage.login_to_delta("shihabSylhetTestOne", "Sylhettest", "$shihabSylhetTest1")
         homepage.validate_username_of_homepage_logged_in("Shihabtest")

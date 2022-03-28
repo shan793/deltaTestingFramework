@@ -69,51 +69,67 @@ class Mainpage(BaseClass):
     date_picker_year_dynamic_xpath = "//span[contains(@class,'dl-datepicker-year') and contains(text(), '{}')]"
     number_of_pax_option_to_select_dynamic_xpath = "//ul[@id = 'passengers-desc']/li[contains(text(), '{}')]"
 
+    @property
     def get_alert_advisory_close_button(self):
         return self.driver.find_element(*Mainpage.alert_advisory_close_button)
 
+    @property
     def get_login_button_home_page(self):
         return self.driver.find_element(*Mainpage.login_button_home_page)
 
+    @property
     def get_overlay_image_advertisement(self):
         return self.driver.find_element(*Mainpage.overlay_image_advertisement)
 
+    @property
     def get_home_page_logged_in_username_displayed(self):
         return self.driver.find_element(*Mainpage.home_page_logged_in_username_displayed)
 
+    @property
     def get_type_of_trip_dropdown_selector(self):
         return self.driver.find_element(*Mainpage.type_of_trip_dropdown_selector)
 
+    @property
     def get_origin_city(self):
         return self.driver.find_element(*Mainpage.origin_city)
 
+    @property
     def get_arrival_city(self):
         return self.driver.find_element(*Mainpage.arrival_city)
 
+    @property
     def get_first_dropdown_suggestion(self):
         return self.driver.find_element(*Mainpage.first_dropdown_suggestion)
 
+    @property
     def get_city_search_box(self):
         return self.driver.find_element(*Mainpage.city_search_box)
 
+    @property
     def get_datepicker_opener(self):
         return self.driver.find_element(*Mainpage.date_picker_opener)
 
+    @property
     def get_datepicker_dep_after_select(self):
         return self.driver.find_element(*Mainpage.date_picker_dep_after_select)
 
+    @property
     def get_select_next_month(self):
         return self.driver.find_element(*Mainpage.select_next_month)
 
+    @property
     def get_done_button_date_picker(self):
         return self.driver.find_element(*Mainpage.done_button_date_picker)
 
+    @property
     def get_pax_picker_dropdown_selector(self):
         return self.driver.find_element(*Mainpage.pax_picker_dropdown_selector)
 
+    @property
     def get_pax_picker_dropdown_all_options_box(self):
         return self.driver.find_element(*Mainpage.pax_picker_dropdown_all_options_box)
 
+    @property
     def get_search_for_flights_submit_button(self):
         return self.driver.find_element(*Mainpage.search_for_all_flights_submit_button)
 
@@ -123,36 +139,36 @@ class Mainpage(BaseClass):
         return loginpage
 
     def validate_username_of_homepage_logged_in(self, expectedFirstName):
-        assert expectedFirstName == self.get_home_page_logged_in_username_displayed().text
+        assert expectedFirstName == self.get_home_page_logged_in_username_displayed.text
 
     def enter_cities_to_travel_to(self, origin, arrival):
-        self.click_to_close(self.get_alert_advisory_close_button())
-        self.get_origin_city().click()
+        self.click_to_close(self.get_alert_advisory_close_button)
+        self.get_origin_city.click()
         actions = ActionChains(self.driver)
         actions.send_keys(origin)
         actions.perform()
 
         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, self.first_dropdown_suggestion_XPath)))
-        self.get_first_dropdown_suggestion().click()
+        self.get_first_dropdown_suggestion.click()
         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, self.arrival_city_XPath)))
-        self.get_arrival_city().click()
+        self.get_arrival_city.click()
         a = ActionChains(self.driver)
         a.send_keys(arrival)
         a.perform()
         WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, self.first_dropdown_suggestion_XPath)))
-        self.get_first_dropdown_suggestion().click()
+        self.get_first_dropdown_suggestion.click()
 
     def select_type_of_trip(self, triptype):
-        assert self.get_type_of_trip_dropdown_selector().is_displayed()
+        assert self.get_type_of_trip_dropdown_selector.is_displayed()
 
         actions = ActionChains(self.driver)
-        actions.move_to_element(self.get_type_of_trip_dropdown_selector())
+        actions.move_to_element(self.get_type_of_trip_dropdown_selector)
         actions.click()
         actions.perform()
 
         type_of_trip = self.driver.find_element(By.XPATH, self.type_of_trip_option_dynamic_xpath.format(triptype))
         type_of_trip.click()
-        assert self.get_type_of_trip_dropdown_selector().text == triptype
+        assert self.get_type_of_trip_dropdown_selector.text == triptype
 
     def date_picker(self, month_as_int, date_as_int, year_as_int):
         month_as_string = calendar.month_name[month_as_int]
@@ -160,13 +176,13 @@ class Mainpage(BaseClass):
         date_picker_month_header_xpath = self.date_picker_month_dynamic_xpath.format(month_as_string)
         date_picker_year_header_xpath = self.date_picker_year_dynamic_xpath.format(year_as_int)
 
-        self.get_datepicker_opener().click()
+        self.get_datepicker_opener.click()
 
         exception_handling = self.get_exception_handling()
 
         while not exception_handling.is_displayed_enhanced(date_picker_month_header_xpath, 1, self.driver) and not exception_handling.is_displayed_enhanced(date_picker_year_header_xpath, 1, self.driver):
             actions = ActionChains(self.driver)
-            actions.move_to_element(self.get_select_next_month())
+            actions.move_to_element(self.get_select_next_month)
             actions.click()
             actions.perform()
 
@@ -177,18 +193,18 @@ class Mainpage(BaseClass):
         a = ActionChains(self.driver)
         a.move_to_element(date_picker_indiv_date)
         a.click()
-        a.move_to_element(self.get_done_button_date_picker())
+        a.move_to_element(self.get_done_button_date_picker)
         a.click()
         a.perform()
 
-        assert f"{month_as_string[0:3]} {date_as_int}" == self.get_datepicker_dep_after_select().text
+        assert f"{month_as_string[0:3]} {date_as_int}" == self.get_datepicker_dep_after_select.text
 
     def pax_count_picker(self, number_of_pax_one_to_nine):
 
-        self.validate_page_has_appeared(self.get_pax_picker_dropdown_selector())
+        self.validate_page_has_appeared(self.get_pax_picker_dropdown_selector)
 
         actions = ActionChains(self.driver)
-        actions.move_to_element(self.get_pax_picker_dropdown_selector())
+        actions.move_to_element(self.get_pax_picker_dropdown_selector)
         actions.click()
         actions.perform()
 
@@ -201,11 +217,11 @@ class Mainpage(BaseClass):
 
         number_of_pax_option_to_select.click()
 
-        assert f'{number_of_pax_one_to_nine} Passenger' in self.get_pax_picker_dropdown_selector().text
+        assert f'{number_of_pax_one_to_nine} Passenger' in self.get_pax_picker_dropdown_selector.text
 
     def hover_over_and_click_search_for_flights_button(self):
         actions = ActionChains(self.driver)
-        actions.move_to_element(self.get_search_for_flights_submit_button())
+        actions.move_to_element(self.get_search_for_flights_submit_button)
         actions.click()
         actions.perform()
 
